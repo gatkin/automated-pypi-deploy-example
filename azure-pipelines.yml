@@ -38,6 +38,8 @@ jobs:
         inputs:
           targetType: inline
           script: |
+            python -m pip install --user --upgrade setuptools wheel
+            python setup.py sdist bdist_wheel
             pip install twine
             python -m twine upload --username ${PYPI_USERNAME} --password ${PYPI_PASSWORD} --repository-url https://upload.pypi.org/legacy/ dist/*
         displayName: Publish Package to PyPi
