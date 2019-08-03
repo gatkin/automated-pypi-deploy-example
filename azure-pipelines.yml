@@ -1,3 +1,11 @@
+trigger:
+  branches:
+    include:
+    - '*'
+  tags:
+    include:
+    - releases/*
+
 jobs:
   - job: Build
     pool:
