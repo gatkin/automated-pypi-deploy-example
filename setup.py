@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="example-pkg-gatkin",
-    version="0.0.1",
+    version="0.0.2",
     author="Greg Atkin",
     author_email="greg.scott.atkin@gmail.com",
     description="A small example package",
