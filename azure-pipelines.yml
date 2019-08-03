@@ -4,7 +4,7 @@ trigger:
       - refs/tags/*  # Trigger builds on tags
       - refs/heads/*  # Trigger builds on branches
 
-  jobs:
+jobs:
   - job: Build
     pool:
       vmImage: 'Ubuntu 16.04'
