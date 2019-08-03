@@ -22,7 +22,7 @@ jobs:
           python setup.py sdist bdist_wheel
 
   - job: Publish
-    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/')) # Only publish on tags
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/releases/')) # Only publish on tags
     pool:
       vmImage: 'Ubuntu 16.04'
 
@@ -35,7 +35,7 @@ jobs:
       - task: Bash@3
         inputs:
           targetType: inline
-          script:
+          script: |
             pip install twine
             python -m twine twine upload --username ${PYPI_USERNAME} --password ${PYPI_PASSWORD} --repository-url https://upload.pypi.org/legacy/ dist/*
         displayName: Publish Package to PyPi
