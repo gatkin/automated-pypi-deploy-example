@@ -1,0 +1,40 @@
+trigger:
+  branches:
+    include:
+      - refs/tags/*  # Trigger builds on tags
+      - refs/heads/*  # Trigger builds on branches
+
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'Ubuntu 16.04'
+
+    steps:
+      - task: UsePythonVersion@0
+        displayName: Setup Python
+        inputs:
+          versionSpec: '3.7'
+
+      - bash: python setup.py sdist bdist_wheel
+
+  - job: Publish
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/')) # Only publish on tags
+    pool:
+      vmImage: 'Ubuntu 16.04'
+
+    steps:
+      - task: UsePythonVersion@0
+        displayName: Setup Python
+        inputs:
+          versionSpec: '3.7'
+
+      - task: Bash@3
+        inputs:
+          targetType: inline
+          script:
+            pip install twine
+            python -m twine twine upload --username ${PYPI_USERNAME} --password ${PYPI_PASSWORD} --repository-url https://upload.pypi.org/legacy/ dist/*
+        displayName: Publish Package to PyPi
+        env:
+          PYPI_USERNAME: $(PYPI_USERNAME)
+          PYPI_PASSWORD: $(PYPI_PASSWORD)
